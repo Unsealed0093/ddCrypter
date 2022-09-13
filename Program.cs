@@ -11,24 +11,13 @@ namespace daydream
             // Run if platform is Windows
             if (Environment.OSVersion.Platform == PlatformID.Win32NT)
             {
-                // Check if Sandboxie is installed
-                Sandboxie.AntiSandboxie();
-
-                // Check if Anubis is installed
-                Anubis.AntiAnubis();
-
-                // Check if Wireshark is installed
-                Wireshark.AntiWireshark();
-
-                // Check if Virtualbox is installed
-                VirtualBox.AntiVirtualBox();
-
-                // Check if Vmware is installed
-                Vmware.AntiVmware();
+                VirtualMachine.CheckEnvironment();
+                VirtualMachine.CheckMacAddress();
+                VirtualMachine.CheckProcess();
             }
 
             Console.Write("Input: ");
-            
+
             string? input = Console.ReadLine();
             string[] argsArray = input.Split(' ');
 
@@ -38,18 +27,23 @@ namespace daydream
                 return;
             }
 
-            if(argsArray[0] == "xor")
+            switch (argsArray[0])
             {
-                if (argsArray.Length < 3)
-                {
-                    Console.WriteLine("Not enough arguments!");
-                    return;
-                }
-
-                XOR.XorFile(argsArray[1], argsArray[2]);
+                case "xor":
+                    if (argsArray.Length < 3)
+                    {
+                        Console.WriteLine("Not enough arguments!");
+                        return;
+                    }
+                    XOR.XorFile(argsArray[1], argsArray[2]);
+                    break;
+                case "help":
+                    Console.WriteLine("xor <file> <key> - Encrypts a file with a key");
+                    break;
+                default:
+                    Console.WriteLine("Invalid argument!");
+                    break;
             }
-
-
         }
     }
 }
